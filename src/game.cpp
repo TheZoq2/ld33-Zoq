@@ -7,8 +7,13 @@ void Game::setup()
     done = false;
     worldView = window->getDefaultView();
     
-    EntityGroup* mainGroup = this->world.getMainGroup();
+    EntityGroup* mainGroup = world.getMainGroup();
 
+    player = new Player(Vec2f(40, 100));
+    player->setPosition(Vec2f(256, -256));
+    mainGroup->addEntity(player);
+
+    generateMap();
 }
 
 void Game::loop()
@@ -55,11 +60,11 @@ void Game::loop()
     
 
     window->setView(worldView);
+    worldView.setCenter(player->getPosition());
     world.update(frameTime);
     world.draw(window, Vec2f(player->getPosition()));
 
     //sf::View view = window->getView();
-
 
     window->setView(uiView);
     uiView.setCenter(uiView.getSize().x / 2, uiView.getSize().y / 2);
@@ -82,5 +87,54 @@ void Game::cleanup()
 bool Game::isDone()
 {
     return this->done;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                      Private methods
+////////////////////////////////////////////////////////////////////////////////
+
+void Game::generateMap()
+{
+    EntityGroup* mainGroup = this->world.getMainGroup();
+    
+    Platform* mainPlatform = new Platform();
+    
+    float platformStep = 128;
+
+    unsigned int worldSize = 2000;
+    
+
+    float possibleAngles[] = {-M_PI/6, -M_PI/12, 0, M_PI / 12, M_PI / 6};
+    int angleAmount = 5;
+    int currentAngle = 3;
+    Vec2f oldPos = Vec2f(0,0);
+
+    for(unsigned int i = 0; i < worldSize; i++)
+    {
+        //seelecting a random angle
+        float addedAngle = rand() % 3 - 1;
+        currentAngle += addedAngle;
+        
+        if(currentAngle >= angleAmount)
+        {
+            currentAngle = 4;
+        }
+        else if(currentAngle < 0)
+        {
+            currentAngle = 1;
+        }
+
+        float angleResult = possibleAngles[currentAngle];
+
+        float newHeight = platformStep * tan(angleResult);
+
+        Vec2f newPos(oldPos.x + platformStep, oldPos.y + newHeight);
+
+        mainPlatform->addPoint(newPos);
+
+        oldPos = newPos;
+    }
+    
+    mainGroup->addPlatform(mainPlatform);
 }
 

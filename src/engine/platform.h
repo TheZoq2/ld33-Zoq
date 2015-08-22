@@ -9,6 +9,8 @@
 class Platform
 {
 public:
+    Platform();
+
     void create(Vec2f pos);
     void draw(sf::RenderWindow* window);
 

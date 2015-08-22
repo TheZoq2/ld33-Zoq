@@ -1,5 +1,10 @@
 #include "platform.h"
 
+Platform::Platform()
+    : pos(0,0)
+{
+}
+
 void Platform::create(Vec2f pos)
 {
     this->pos = pos;

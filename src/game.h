@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <dirent.h>
+#include <math.h>
 
 #include <SFML/Graphics.hpp>
 
@@ -49,6 +50,8 @@ private:
 
 
     Player* player;
+
+    void generateMap();
 };
 
 #endif

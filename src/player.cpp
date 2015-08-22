@@ -31,3 +31,8 @@ void Player::update(float time)
     }
 
 }
+
+Player::Shape Player::getShape()
+{
+    return currentShape;
+}
