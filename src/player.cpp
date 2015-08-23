@@ -8,6 +8,7 @@ Player::Player(Vec2f size)
     attackDuration = sf::seconds(0.25);
 
     health = 1000;
+    hidden = false;
 }
 Player::~Player()
 {}

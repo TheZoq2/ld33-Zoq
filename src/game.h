@@ -37,10 +37,21 @@ public:
     
     bool isDone();
 
+    void setupGame();
+    void runGame(float frameTime);
+    void cleanupGame();
 private:
     enum GameState
     {
+        MENU_SETUP,
+        MENU,
+        GAME_SETUP,
+        GAME,
+        RETRY_SETUP,
+        RETRY
     };
+    GameState gameState;
+
     bool done;
 
     sf::RenderWindow* window;
@@ -76,6 +87,11 @@ private:
 
     sf::Texture healthTexture;
     sf::Sprite healthSprite;
+
+    sf::Texture menuTexture;
+    sf::Sprite menuSprite;
+    sf::Texture restartTexture;
+    sf::Sprite restartSprite;
 };
 
 #endif

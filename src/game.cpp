@@ -11,13 +11,7 @@ void Game::setup()
     worldView.zoom(1.3);
     uiView = sf::View(sf::Vector2f(1280/2, 720/2), sf::Vector2f(1280, 720));
 
-    generateMap();
-    
-    EntityGroup* mainGroup = world.getMainGroup();
-
-    player = new Player(Vec2f(40, 100));
-    player->setPosition(Vec2f(10000, getWorldHeight(10000) - 100));
-    mainGroup->addEntity(player);
+    gameState = MENU_SETUP;
 
     swordTexture = std::make_shared<sf::Texture>();
 
@@ -26,6 +20,13 @@ void Game::setup()
     healthTexture.loadFromFile("../media/img/bloodyScreen.png");
     healthSprite.setTexture(healthTexture);
     healthSprite.setScale(6.5, 6.5);
+
+    menuTexture.loadFromFile("../media/img/mainMenu.png");
+    menuSprite.setTexture(menuTexture);
+    menuSprite.setScale(6.5, 6.5);
+    restartTexture.loadFromFile("../media/img/restartMenu.png");
+    restartSprite.setTexture(restartTexture);
+    restartSprite.setScale(6.5, 6.5);
 }
 
 void Game::loop()
@@ -68,6 +69,91 @@ void Game::loop()
 
     //Redraw stuff
     window->clear(sf::Color(135,206,235));
+
+    switch(gameState)
+    {
+        case(MENU_SETUP):
+        {
+            gameState = MENU;
+            break;
+        }
+        case(MENU):
+        {
+            window->setView(uiView);
+            window->draw(menuSprite);
+
+            if(sf::Joystick::isButtonPressed(0, 0))
+            {
+                //Move on to the game
+                gameState = GAME_SETUP;
+            }
+            break;
+        }
+        case(GAME_SETUP):
+        {
+            setupGame();
+            gameState = GAME;
+            break;
+        }
+        case(GAME):
+        {
+            runGame(frameTime);
+            break;
+        }
+        case(RETRY_SETUP):
+        {
+            gameState = RETRY;
+            break;
+        }
+        case(RETRY):
+        {
+            if(sf::Joystick::isButtonPressed(0, 2))
+            {
+                gameState = MENU_SETUP;
+            }
+            else if(sf::Joystick::isButtonPressed(0,0))
+            {
+                gameState = GAME_SETUP;
+            }
+
+            window->setView(uiView);
+            window->draw(restartSprite);
+            break;
+        }
+    };
+
+    window->display();
+
+    //Exit if the window has been closed
+    if(window->isOpen() == false)
+    {
+        this->done = true;
+        return;
+    }
+}
+void Game::cleanup()
+{
+    delete window;
+    delete player;
+}
+
+void Game::setupGame()
+{
+    generateMap();
+    
+    EntityGroup* mainGroup = world.getMainGroup();
+
+    player = new Player(Vec2f(40, 100));
+    player->setPosition(Vec2f(10000, getWorldHeight(10000) - 100));
+    mainGroup->addEntity(player);
+
+}
+void Game::cleanupGame()
+{
+    world.getMainGroup()->clear();
+}
+void Game::runGame(float frameTime)
+{
     
 
     window->setView(worldView);
@@ -84,19 +170,12 @@ void Game::loop()
     healthSprite.setColor(sf::Color(255,255,255, 255 * (1 - player->getHealth()  / 1000.0f)));
     window->draw(healthSprite);
 
-    window->display();
 
-    //Exit if the window has been closed
-    if(window->isOpen() == false)
+    if(player->getHealth() < 0)
     {
-        this->done = true;
-        return;
+        gameState = RETRY_SETUP;
+        cleanupGame();
     }
-}
-void Game::cleanup()
-{
-    delete window;
-    delete player;
 }
 
 void Game::updateWorld()

@@ -99,6 +99,12 @@ void EntityGroup::draw(sf::RenderWindow* window)
     }
 }
 
+void EntityGroup::clear()
+    {
+        platforms.clear();
+        entities.clear();
+    }
+
 std::vector<Entity*> EntityGroup::getEntities()
 {
     std::vector<Entity*> result;
