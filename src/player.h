@@ -20,6 +20,8 @@ public:
     virtual void update(float time);
     virtual void draw(sf::RenderWindow* window);
 
+    virtual void damage(float damage);
+
     Shape getShape();
     bool isHidden();
     bool canBeSeen();
@@ -40,5 +42,6 @@ private:
     bool hidden;
     HidingSpot* hidingSpot;
 
+    float health;
 };
 #endif

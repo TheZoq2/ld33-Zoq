@@ -95,6 +95,27 @@ void HumanEntity::kill()
 {
     done = true;
 
+    bleed();
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+
+void HumanEntity::roll(int direction)
+{
+    if(moveState == MoveState::NORMAL && groundState == GroundState::ON_GROUND)
+    {
+        rollStart = rollClock.getElapsedTime();
+
+        velocity.x = maxSpeed * direction * rollMultiplyer;
+        this->rollDirection = direction;
+
+        this->moveState = ROLLING;
+    }
+}
+
+void HumanEntity::bleed()
+{
     //Creating blood splats
     for(unsigned int i = 0; i < 40; i++)
     {
@@ -122,21 +143,5 @@ void HumanEntity::kill()
 
         //Add the blood to the entity group
         group->addEntity(splatter);
-    }
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////
-
-void HumanEntity::roll(int direction)
-{
-    if(moveState == MoveState::NORMAL && groundState == GroundState::ON_GROUND)
-    {
-        rollStart = rollClock.getElapsedTime();
-
-        velocity.x = maxSpeed * direction * rollMultiplyer;
-        this->rollDirection = direction;
-
-        this->moveState = ROLLING;
     }
 }

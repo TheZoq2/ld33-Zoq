@@ -4,7 +4,7 @@ BloodSplatter::BloodSplatter()
     : PhysicsEntity(Vec2f(6, 6))
 {
     const float minLifeTime = 0.5;
-    const float maxLifeTime = 0.5;
+    const float maxLifeTime = 2;
     
     lifetime = minLifeTime + maxLifeTime * (rand() % 1000) / 1000.0f;
 }

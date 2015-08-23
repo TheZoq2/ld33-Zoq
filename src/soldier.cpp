@@ -90,12 +90,6 @@ void Soldier::draw(sf::RenderWindow* window)
     swordSprite.setPosition(pos);
     window->draw(swordSprite);
 
-    //Making a line for the sword
-    float swordX = pos.x + cos(realAngle) * 128;
-    float swordY = pos.y + sin(realAngle) * 128;
-
-    Line testLine(pos, Vec2f(swordX, swordY));
-    testLine.draw(window);
 }
 
 void Soldier::attack()
@@ -103,6 +97,7 @@ void Soldier::attack()
     if(swingState == READY)
     {
         swingState = FORWARD;
+        swingDealtDamage = false;
     }
 }
 void Soldier::updateSword(float time)
@@ -148,6 +143,19 @@ void Soldier::updateSword(float time)
     }
 
     swordSprite.setRotation(realAngle / M_PI * 180 + 90);
+
+    //Dealing damage
+    //Making a line for the sword
+    float swordX = pos.x + cos(realAngle) * 128;
+    float swordY = pos.y + sin(realAngle) * 128;
+
+    Line testLine(pos, Vec2f(swordX, swordY));
+
+    if(testLine.getIntersect(player->getCollisionLine()).intersected && !swingDealtDamage)
+    {
+        player->damage(250);
+        swingDealtDamage = true;
+    }
 }
 
 void Soldier::setSwordTexture(std::shared_ptr<sf::Texture> texture)

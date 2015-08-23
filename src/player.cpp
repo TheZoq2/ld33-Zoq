@@ -7,6 +7,7 @@ Player::Player(Vec2f size)
     attackFrequency = sf::seconds(0.5);
     attackDuration = sf::seconds(0.25);
 
+    health = 1000;
 }
 Player* Player::clone()
 {
@@ -120,6 +121,21 @@ void Player::draw(sf::RenderWindow* window)
     }
 }
 
+void Player::damage(float damage)
+{
+    if(currentShape == Shape::MONSTER)
+    {
+        health -= damage * 0.1;
+    }
+    else
+    {
+        health -= damage;
+    }
+
+    bleed();
+    std::cout << health << std::endl;
+}
+
 Player::Shape Player::getShape()
 {
     return currentShape;
@@ -133,6 +149,9 @@ bool Player::canBeSeen()
     return getShape() == MONSTER && !isHidden();
 }
 
+//////////////////////////////////////////////////
+//          Private members
+//////////////////////////////////////////////////
 void Player::transform()
 {
     if(currentShape == HUMAN)

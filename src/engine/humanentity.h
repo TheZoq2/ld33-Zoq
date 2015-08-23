@@ -45,6 +45,7 @@ protected:
 
     std::shared_ptr<sf::Texture> bloodTexture;
 
+    void bleed();
 private:
 };
 #endif

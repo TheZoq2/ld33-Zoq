@@ -31,9 +31,6 @@ private:
     float sightRange;
     float attackRange;
     
-    sf::Sprite swordSprite;
-    float swordAngle;
-    float realAngle;
     enum SwingState
     {
         READY,
@@ -41,7 +38,11 @@ private:
         BACK
     };
 
+    sf::Sprite swordSprite;
+    float swordAngle;
+    float realAngle;
     SwingState swingState;
+    bool swingDealtDamage;
 
     float totalTime;
     float lastMoveChange;
