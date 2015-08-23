@@ -18,7 +18,7 @@ void Soldier::update(float time)
     float lastKnownDistance = pos.x - lastKnownPlayer.x;
     int lastKnownDirection = lastKnownDistance / std::abs(lastKnownDistance);
 
-    if(std::abs(playerDistance) < sightRange)
+    if(std::abs(playerDistance) < sightRange && player->canBeSeen())
     {
         detectState = DetectionState::DETECTED;
     }
@@ -37,6 +37,11 @@ void Soldier::update(float time)
         case(DETECTED):
         {
             lastKnownPlayer = player->getPosition();
+
+            if(player->isHidden())
+            {
+                detectState = SEARCHING;
+            }
             break;
         }
     }

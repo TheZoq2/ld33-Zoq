@@ -25,6 +25,7 @@ public:
 
     int getDepth();
     Vec2f getPosition();
+    bool isDone();
 
     virtual bool pointIsOnEntity(Vec2f point);
 protected:
@@ -33,6 +34,8 @@ protected:
     //This is the group that the entity is part of. If it is part of a group.
     //This group gets notified of any changes to the depth of the entity.
     EntityGroup* group; 
+    
+    bool done; //Set to false when the entity is not need anymore and can be removed by a manager
 private:
     int depth;
 

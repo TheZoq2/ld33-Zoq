@@ -33,6 +33,8 @@ public:
     void loop();
     void cleanup();
     
+    void updateWorld();
+    
     bool isDone();
 
 private:
@@ -51,6 +53,8 @@ private:
     sf::Clock gameClock;
     sf::Time frameTime;
     sf::Time lastFrame;
+    
+    sf::Time lastWave;
 
     Player* player;
 
@@ -62,6 +66,8 @@ private:
     std::vector< HidingSpotTemplate > templateHidingSpots;
 
     void addMapTexture(std::string path);
+
+    float getWorldHeight(float xPos);
 };
 
 #endif

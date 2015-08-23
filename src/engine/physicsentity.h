@@ -29,14 +29,15 @@ protected:
 
     Vec2f velocity;
 protected:
+    //The size of the entity. Each physics entity is considered a square and this determines
+    //the width and height of that square
+    Vec2f size;
+
     sf::RectangleShape shape;
 private:
     uint32_t platformID; // The platform where the entity is currently 'standing'
     float platformX; //The current xPosition on the platform
 
-    //The size of the entity. Each physics entity is considered a square and this determines
-    //the width and height of that square
-    Vec2f size;
 
 
 

@@ -20,15 +20,22 @@ public:
     virtual void draw(sf::RenderWindow* window);
 
     Shape getShape();
+    bool isHidden();
+    bool canBeSeen();
 
 private:
+    void attack();
+
     void transform();
     sf::Time transformFrequency;
+    sf::Time attackFrequency;
+    sf::Time attackDuration;
 
     Shape currentShape;
 
     sf::Clock playerClock;
     sf::Time lastTransform;
+    sf::Time lastAttack;
 
     bool hidden;
     HidingSpot* hidingSpot;

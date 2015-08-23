@@ -9,34 +9,14 @@ void Game::setup()
     done = false;
     worldView = window->getDefaultView();
     worldView.zoom(1.3);
+
+    generateMap();
     
     EntityGroup* mainGroup = world.getMainGroup();
 
     player = new Player(Vec2f(40, 100));
-    player->setPosition(Vec2f(256, -256));
+    player->setPosition(Vec2f(10000, getWorldHeight(10000) - 100));
     mainGroup->addEntity(player);
-
-    //Adding a couple of test civilians
-    Civilian* testCiv1 = new Civilian(Vec2f(30, 90), player);
-    testCiv1->setPosition(Vec2f(1000, -300));
-    Civilian* testCiv2 = new Civilian(Vec2f(30, 90), player);
-    testCiv2->setPosition(Vec2f(1000, -300));
-    Civilian* testCiv3 = new Civilian(Vec2f(30, 90), player);
-    testCiv3->setPosition(Vec2f(1000, -300));
-    Civilian* testCiv4 = new Civilian(Vec2f(30, 90), player);
-    testCiv4->setPosition(Vec2f(1000, -300));
-
-    mainGroup->addEntity(testCiv1);
-    mainGroup->addEntity(testCiv2);
-    mainGroup->addEntity(testCiv3);
-    mainGroup->addEntity(testCiv4);
-
-    Soldier* testSoldier = new Soldier(Vec2f(30,80), player);
-    testSoldier->setPosition(Vec2f(1000, -200));
-
-    mainGroup->addEntity(testSoldier);
-
-    generateMap();
 }
 
 void Game::loop()
@@ -105,6 +85,72 @@ void Game::loop()
 void Game::cleanup()
 {
     delete window;
+}
+
+void Game::updateWorld()
+{
+    const float despawnDistance = 1000;
+    const float spawnDistance = 700;
+    const int maxCivs = 20;
+    const int maxSoldiers = 10;
+
+    EntityGroup* mainGroup = world.getMainGroup();
+    //Count how many people are in the world
+    std::vector<Entity*> entities = mainGroup->getEntities();
+
+    if(gameClock.getElapsedTime() - lastFrame > sf::seconds(5))
+    {
+        int civAmount = 0;
+        int soldierAmount = 0;
+
+        for(auto it : entities)
+        {
+            float playerDistance = it->getPosition().x - player->getPosition().x;
+
+            Civilian* civilian = dynamic_cast<Civilian*>(it);
+            if(civilian != nullptr)
+            {
+                if(std::abs(playerDistance) > despawnDistance)
+                {
+                    civilian->kill();
+                }
+                else
+                {
+                    civAmount++;
+                }
+            }
+
+            Soldier* soldier = dynamic_cast<Soldier*>(it);
+            if(soldier != nullptr)
+            {
+                if(std::abs(playerDistance) > despawnDistance)
+                {
+                    soldier->kill();
+                }
+                else
+                {
+                    soldierAmount++;
+                }
+            }
+        }
+
+        if(civAmount < maxCivs)
+        {
+            //Spawn some new civilians
+            for(int i = 0; i < maxCivs - civAmount; i++)
+            {
+                Civilian* civilian = new Civilian(Vec2f(30,90), player);
+
+                float xPos = player->getPosition().x + spawnDistance;
+                if(rand() % 2 == 1)
+                {
+                    xPos = player->getPosition().x - spawnDistance;
+                }
+                civilian->setPosition(Vec2f(xPos, getWorldHeight(xPos) - 200));
+                mainGroup->addEntity(civilian);
+            }
+        }
+    } //End waves
 }
 
 bool Game::isDone()
@@ -220,4 +266,13 @@ void Game::createTemplateHidingSpots()
                 Vec2f(0.5, 0.75),
                 Vec2f(4,4)
                 ));
+}
+
+float Game::getWorldHeight(float xPos)
+{
+    EntityGroup* mainGroup = world.getMainGroup();
+
+    Line testLine(Vec2f(xPos, -100000), Vec2f(xPos, 100000));
+
+    return mainGroup->getPlatformCollision(Vec2f(0, 0), &testLine).intResult.pos.y;
 }

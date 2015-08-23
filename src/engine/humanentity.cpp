@@ -72,11 +72,27 @@ void HumanEntity::update(float time)
     {
         movementDirection = -1;
     }
+
+    collisionLine = Line(Vec2f(pos.x, pos.y-size.y/2), Vec2f(pos.x, pos.y+size.y/2));
 }
 
 void HumanEntity::draw(sf::RenderWindow* window)
 {
     PhysicsEntity::draw(window);
+
+    //collisionLine.draw(window);
+}
+
+Line* HumanEntity::getCollisionLine()
+{
+    return &collisionLine;
+}
+
+void HumanEntity::kill()
+{
+    done = true;
+
+    std::cout << "entity is kill :p" << std::endl;
 }
 
 //////////////////////////////////////////////////////////////////////////////////

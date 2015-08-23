@@ -12,6 +12,9 @@ public:
     virtual void update(float time);
     virtual void draw(sf::RenderWindow* window);
 
+    virtual void kill();
+    
+    virtual Line* getCollisionLine();
 protected:
     enum MoveState
     {
@@ -36,6 +39,8 @@ protected:
 
     MoveState moveState;
     int movementDirection;
+
+    Line collisionLine;
 
 private:
 };

@@ -4,6 +4,8 @@ Player::Player(Vec2f size)
     : HumanEntity(size)
 {
     transformFrequency = sf::seconds(10);
+    attackFrequency = sf::seconds(0.5);
+    attackDuration = sf::seconds(0.25);
 }
 Player* Player::clone()
 {
@@ -89,6 +91,25 @@ void Player::update(float time)
             movementAmount = 0;
         }
     }
+
+    //Attack stuff
+    if(!hidden && currentShape == MONSTER)
+    {
+        sf::Time sinceLastAttack = playerClock.getElapsedTime() - lastAttack;
+
+        if(sinceLastAttack < attackDuration)
+        {
+            attack();
+        }
+        else if(sinceLastAttack > attackFrequency)
+        {
+            if(sf::Joystick::isButtonPressed(0, 2))
+            {
+                lastAttack = playerClock.getElapsedTime();
+                attack();
+            }
+        }
+    }
 }
 void Player::draw(sf::RenderWindow* window)
 {
@@ -101,6 +122,14 @@ void Player::draw(sf::RenderWindow* window)
 Player::Shape Player::getShape()
 {
     return currentShape;
+}
+bool Player::isHidden()
+{
+    return hidden;
+}
+bool Player::canBeSeen()
+{
+    return getShape() == MONSTER && !isHidden();
 }
 
 void Player::transform()
@@ -121,4 +150,31 @@ void Player::transform()
 
         shape.setFillColor(sf::Color(255,255,255));
     }
+}
+
+void Player::attack()
+{
+    float armLength = 64;
+
+    Line arm(Vec2f(pos.x, pos.y), Vec2f(pos.x + armLength * movementDirection, pos.y));
+
+    std::vector<Entity*> entities = group->getEntities();
+    //Loop through the entities and check for humans
+    for(auto it : entities)
+    {
+        HumanEntity* human = dynamic_cast<HumanEntity*>(it);
+
+        if(human != nullptr)
+        {
+            //make sure it isn't a player
+            if(dynamic_cast<Player*>(human) == nullptr)
+            {
+                if(arm.getIntersect(human->getCollisionLine()).intersected)
+                {
+                    human->kill();
+                }
+            }
+        }
+    }
+
 }

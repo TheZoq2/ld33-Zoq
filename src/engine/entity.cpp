@@ -3,6 +3,7 @@
 Entity::Entity()
 {
     this->depth = 0; //Setting the default depth
+    this->done = false;
 }
 
 void Entity::setPosition(Vec2f pos)
@@ -31,6 +32,10 @@ int Entity::getDepth()
 Vec2f Entity::getPosition()
 {
     return pos;
+}
+bool Entity::isDone()
+{
+    return done;
 }
 
 bool Entity::pointIsOnEntity(Vec2f point)

@@ -9,7 +9,6 @@ public:
     Soldier(Vec2f size, Player* player);
     
     virtual void update(float time);
-
     
 private:
     enum DetectionState
