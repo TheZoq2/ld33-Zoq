@@ -9,6 +9,8 @@ Player::Player(Vec2f size)
 
     health = 1000;
 }
+Player::~Player()
+{}
 Player* Player::clone()
 {
     return new Player(*this);

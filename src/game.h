@@ -38,6 +38,9 @@ public:
     bool isDone();
 
 private:
+    enum GameState
+    {
+    };
     bool done;
 
     sf::RenderWindow* window;

@@ -96,6 +96,7 @@ void Game::loop()
 void Game::cleanup()
 {
     delete window;
+    delete player;
 }
 
 void Game::updateWorld()

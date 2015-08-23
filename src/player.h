@@ -14,7 +14,9 @@ public:
         MONSTER,
     };
 
+
     Player(Vec2f size);
+    virtual ~Player();
     virtual Player* clone();
 
     virtual void update(float time);
