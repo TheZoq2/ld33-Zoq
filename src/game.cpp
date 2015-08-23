@@ -180,8 +180,8 @@ void Game::runGame(float frameTime)
 
 void Game::updateWorld()
 {
-    const float despawnDistance = 1500;
-    const float spawnDistance = 1000;
+    const float despawnDistance = 2000;
+    const float spawnDistance = 1500.03;
     const int maxCivs = 20;
     const int maxSoldiers = 10;
 
