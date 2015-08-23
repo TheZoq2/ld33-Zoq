@@ -48,7 +48,9 @@ private:
         GAME_SETUP,
         GAME,
         RETRY_SETUP,
-        RETRY
+        RETRY,
+        TUTORIAL1,
+        TUTORIAL2,
     };
     GameState gameState;
 
@@ -92,6 +94,15 @@ private:
     sf::Sprite menuSprite;
     sf::Texture restartTexture;
     sf::Sprite restartSprite;
+    sf::Sprite tutorial1Sprite;
+    sf::Sprite tutorial2Sprite;
+    sf::Texture tutorial1Texture;
+    sf::Texture tutorial2Texture;
+
+    std::shared_ptr<sf::Texture> civilianTexture;
+    std::shared_ptr<sf::Texture> civilianWalkTexture;
+    std::shared_ptr<sf::Texture> soldierTexture;
+    std::shared_ptr<sf::Texture> soldierWalkTexture;
 };
 
 #endif

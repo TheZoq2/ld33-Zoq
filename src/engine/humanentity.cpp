@@ -16,6 +16,15 @@ HumanEntity::HumanEntity(Vec2f size)
 
     bloodTexture = std::make_shared<sf::Texture>();
     bloodTexture->loadFromFile("../media/img/blood.png");
+
+    walkSprite.setOrigin(32,32);
+    walkSprite.setScale(2, 2);
+    walkFrames[0] = std::make_shared<sf::Texture>();
+    walkFrames[1] = std::make_shared<sf::Texture>();
+
+    walkFrames[0]->loadFromFile("../media/img/playerDemon.png");
+    walkFrames[1]->loadFromFile("../media/img/playerDemon_walk.png");
+    walkSprite.setTexture(*walkFrames[0]);
 }
 HumanEntity* HumanEntity::clone()
 {
@@ -81,9 +90,26 @@ void HumanEntity::update(float time)
 
 void HumanEntity::draw(sf::RenderWindow* window)
 {
-    PhysicsEntity::draw(window);
+    //PhysicsEntity::draw(window);
 
     //collisionLine.draw(window);
+    if(movementAmount != 0)
+    {
+        float sinValue = sin(rollClock.getElapsedTime().asSeconds() * 10.0f);
+        int textureIndex = round((sinValue + 1) / 2.0f);
+
+        //std::cout << sinValue << "    " << textureIndex<< std::endl;
+        walkSprite.setTexture(*walkFrames[textureIndex]);
+    }
+    else
+    {
+        walkSprite.setTexture(*walkFrames[0]);
+    }
+    
+    walkSprite.setScale(movementDirection * 2 , 2);
+    walkSprite.setPosition(pos);
+
+    window->draw(walkSprite);
 }
 
 Line* HumanEntity::getCollisionLine()
@@ -96,6 +122,12 @@ void HumanEntity::kill()
     done = true;
 
     bleed();
+}
+
+void HumanEntity::setWalkFrame(std::shared_ptr<sf::Texture> texture, int index)
+{
+    walkFrames[index] = texture;
+    walkSprite.setTexture(*walkFrames[index]);
 }
 
 //////////////////////////////////////////////////////////////////////////////////

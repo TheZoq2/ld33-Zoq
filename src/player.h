@@ -46,5 +46,23 @@ private:
     HidingSpot* hidingSpot;
 
     float health;
+
+    //sf::Texture normalTexture;
+    //sf::Texture monsterTexture;
+    std::shared_ptr<sf::Texture> normalTexture;
+    std::shared_ptr<sf::Texture> normalWalkTexture;
+    std::shared_ptr<sf::Texture> monsterTexture;
+    std::shared_ptr<sf::Texture> monsterWalkTexture;
+
+
+    sf::Texture monsterAttackTexture;
+    //sf::Sprite sprite;
+    sf::Sprite attackSprite;
+
+    bool attacking;
+    bool showTransformIndicator;
+    sf::Sprite transformIndicator;
+
+    float score;
 };
 #endif

@@ -27,6 +27,24 @@ void Game::setup()
     restartTexture.loadFromFile("../media/img/restartMenu.png");
     restartSprite.setTexture(restartTexture);
     restartSprite.setScale(6.5, 6.5);
+
+    tutorial1Texture.loadFromFile("../media/img/tutorial1.png");
+    tutorial1Sprite.setTexture(tutorial1Texture);
+    tutorial1Sprite.setScale(6.5, 6.5);
+    tutorial2Texture.loadFromFile("../media/img/tutorial2.png");
+    tutorial2Sprite.setTexture(tutorial2Texture);
+    tutorial2Sprite.setScale(6.5, 6.5);
+
+    //Loading npc textures
+    civilianTexture = std::make_shared<sf::Texture>();
+    civilianWalkTexture = std::make_shared<sf::Texture>();
+    civilianTexture->loadFromFile("../media/img/civilian1.png");
+    civilianWalkTexture->loadFromFile("../media/img/civilian1_walk.png");
+
+    soldierTexture = std::make_shared<sf::Texture>();
+    soldierWalkTexture = std::make_shared<sf::Texture>();
+    soldierTexture->loadFromFile("../media/img/soldier1.png");
+    soldierWalkTexture->loadFromFile("../media/img/soldier1_walk.png");
 }
 
 void Game::loop()
@@ -87,6 +105,11 @@ void Game::loop()
                 //Move on to the game
                 gameState = GAME_SETUP;
             }
+            if(sf::Joystick::isButtonPressed(0, 1))
+            {
+                //Move on to the tutorial
+                gameState = TUTORIAL1;
+            }
             break;
         }
         case(GAME_SETUP):
@@ -118,6 +141,28 @@ void Game::loop()
 
             window->setView(uiView);
             window->draw(restartSprite);
+            break;
+        }
+        case(TUTORIAL1):
+        {
+            if(sf::Joystick::isButtonPressed(0, 0))
+            {
+                gameState = TUTORIAL2;
+            }
+
+            window->setView(uiView);
+            window->draw(tutorial1Sprite);
+            break;
+        }
+        case(TUTORIAL2):
+        {
+            if(sf::Joystick::isButtonPressed(0, 2))
+            {
+                gameState = MENU;
+            }
+
+            window->setView(uiView);
+            window->draw(tutorial2Sprite);
             break;
         }
     };
@@ -244,6 +289,9 @@ void Game::updateWorld()
                     xPos = player->getPosition().x - spawnDistance;
                 }
                 civilian->setPosition(Vec2f(xPos, getWorldHeight(xPos) - 200));
+                civilian->setWalkFrame(civilianTexture, 0);
+                civilian->setWalkFrame(civilianWalkTexture, 1);
+
                 mainGroup->addEntity(civilian);
             }
         }
@@ -261,6 +309,9 @@ void Game::updateWorld()
                 }
                 soldier->setPosition(Vec2f(xPos, getWorldHeight(xPos) - 200));
                 soldier->setSwordTexture(swordTexture);
+                soldier->setWalkFrame(soldierTexture, 0);
+                soldier->setWalkFrame(soldierWalkTexture, 1);
+
                 mainGroup->addEntity(soldier);
             }
         }

@@ -9,6 +9,33 @@ Player::Player(Vec2f size)
 
     health = 1000;
     hidden = false;
+
+    normalTexture = std::make_shared<sf::Texture>();
+    normalWalkTexture = std::make_shared<sf::Texture>();
+    monsterTexture = std::make_shared<sf::Texture>();
+    monsterWalkTexture = std::make_shared<sf::Texture>();
+
+    normalTexture->loadFromFile("../media/img/playerHuman.png");
+    normalWalkTexture->loadFromFile("../media/img/playerHuman_walk.png");
+    monsterTexture->loadFromFile("../media/img/playerDemon.png");
+    monsterWalkTexture->loadFromFile("../media/img/playerDemon_walk.png");
+
+    monsterAttackTexture.loadFromFile("../media/img/playerDemon_attack.png");
+    //sprite.setOrigin(32,32);
+    //sprite.setScale(2, 2);
+    //sprite.setTexture(normalTexture);
+
+    attackSprite.setOrigin(32,32);
+    attackSprite.setScale(2, 2);
+    attackSprite.setTexture(monsterAttackTexture);
+
+    transformIndicator.setTexture(*normalTexture);
+    transformIndicator.setColor(sf::Color(255,255,255, 100));
+    transformIndicator.setScale(2, 2);
+    transformIndicator.setOrigin(32,32);
+
+    currentShape = MONSTER;
+    transform();
 }
 Player::~Player()
 {}
@@ -53,6 +80,14 @@ void Player::update(float time)
     {
         transform();
         lastTransform = playerClock.getElapsedTime();
+    }
+    else if(playerClock.getElapsedTime() - lastTransform > transformFrequency - sf::seconds(2))
+    {
+        showTransformIndicator = true;
+    }
+    else
+    {
+        showTransformIndicator = false;
     }
 
     //Hiding feature
@@ -105,6 +140,7 @@ void Player::update(float time)
         if(sinceLastAttack < attackDuration)
         {
             attack();
+            attacking = true;
         }
         else if(sinceLastAttack > attackFrequency)
         {
@@ -112,8 +148,17 @@ void Player::update(float time)
             {
                 lastAttack = playerClock.getElapsedTime();
                 attack();
+                attacking = true;
             }
         }
+        else
+        {
+            attacking = false;
+        }
+    }
+    else
+    {
+        attacking = false;
     }
 }
 void Player::draw(sf::RenderWindow* window)
@@ -121,6 +166,24 @@ void Player::draw(sf::RenderWindow* window)
     if(hidden == false)
     {
         HumanEntity::draw(window);
+        //sprite.setScale(2 * movementDirection, 2);
+        ////HumanEntity::draw(window);
+        //sprite.setPosition(pos);
+        //window->draw(sprite);
+
+        if(attacking)
+        {
+            attackSprite.setScale(2 * movementDirection, 2);
+            attackSprite.setPosition(pos);
+            window->draw(attackSprite);
+
+        }
+        if(showTransformIndicator)
+        {
+            transformIndicator.setScale(2 * movementDirection, 2);
+            transformIndicator.setPosition(pos);
+            window->draw(transformIndicator);
+        }
     }
 }
 
@@ -168,6 +231,11 @@ void Player::transform()
         HumanEntity::maxSpeed = 220;
 
         shape.setFillColor(sf::Color(150,150,150));
+        //sprite.setTexture(monsterTexture);
+        HumanEntity::setWalkFrame(monsterTexture, 0);
+        HumanEntity::setWalkFrame(monsterWalkTexture, 1);
+
+        transformIndicator.setTexture(*normalTexture);
     }
     else
     {
@@ -176,6 +244,9 @@ void Player::transform()
         HumanEntity::maxSpeed = 150;
 
         shape.setFillColor(sf::Color(255,255,255));
+        HumanEntity::setWalkFrame(normalTexture, 0);
+        HumanEntity::setWalkFrame(normalWalkTexture, 1);
+        transformIndicator.setTexture(*monsterTexture);
     }
 }
 
