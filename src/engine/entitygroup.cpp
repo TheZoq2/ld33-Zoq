@@ -59,21 +59,31 @@ void EntityGroup::onEntityDepthChange(Entity* entity)
 
 void EntityGroup::update(float frameTime)
 {
-    std::vector<std::vector<std::unique_ptr<Entity> >::iterator > toBeRemoved;
+    //std::vector<std::vector<std::unique_ptr<Entity> >::iterator > toBeRemoved;
 
     for(std::vector<std::unique_ptr<Entity> >::iterator it = entities.begin(); it != entities.end(); it++)
     {
         it->get()->update(frameTime);
-
-        if(it->get()->isDone())
-        {
-            toBeRemoved.push_back(it);
-        }
     }
-
-    for(auto it : toBeRemoved)
+    
+    bool allRemoved = false;
+    while(allRemoved == false)
     {
-        entities.erase(it);
+        std::vector<std::unique_ptr<Entity> >::iterator it;
+
+        for(it = entities.end() -1; it != entities.begin(); it--)
+        {
+            if(it->get()->isDone())
+            {
+                entities.erase(it);
+                break;
+            }
+        }
+
+        if(it == entities.begin())
+        {
+            allRemoved = true;
+        }
     }
 }
 void EntityGroup::draw(sf::RenderWindow* window)

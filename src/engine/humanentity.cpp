@@ -96,14 +96,14 @@ void HumanEntity::kill()
     done = true;
 
     //Creating blood splats
-    /*for(unsigned int i = 0; i < 20; i++)
+    for(unsigned int i = 0; i < 40; i++)
     {
         BloodSplatter* splatter = new BloodSplatter();
         splatter->create(bloodTexture);
         
         float maxSpeedX = 200;
-        float minSpeedX = 20;
-        float minSpeedY = -50;
+        float minSpeedX = -200;
+        float minSpeedY = -500;
         float maxSpeedY = 30;
 
         if(movementDirection == 1)
@@ -113,12 +113,16 @@ void HumanEntity::kill()
             maxSpeedX = -buffer;
         }
 
+        Vec2f position = this->getPosition();
+        position.x += 16 * (rand() % 1000) / 1000.0f;
+        position.y += 64 * (rand() % 1000) / 1000.0f;
+
         splatter->giveSpeed(minSpeedX, minSpeedY, maxSpeedX, maxSpeedY);
-        splatter->setPosition(this->getPosition());
+        splatter->setPosition(position);
 
         //Add the blood to the entity group
         group->addEntity(splatter);
-    }*/
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////

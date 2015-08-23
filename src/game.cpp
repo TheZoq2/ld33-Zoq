@@ -1,6 +1,5 @@
 #include "game.h"
 
-
 void Game::setup()
 {
     //Setting the random seed
@@ -27,7 +26,6 @@ void Game::loop()
 {
     float frameTime = (gameClock.getElapsedTime() - lastFrame).asSeconds();
     lastFrame = gameClock.getElapsedTime();
-
 
     //Handle window events
     sf::Event event;
@@ -120,6 +118,8 @@ void Game::updateWorld()
                 if(std::abs(playerDistance) > despawnDistance)
                 {
                     civilian->kill();
+
+                    //std::cout << it->getPosition().x << "    " << player->getPosition().x << std::endl;
                 }
                 else
                 {

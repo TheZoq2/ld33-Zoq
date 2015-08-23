@@ -13,10 +13,14 @@ Civilian::Civilian(Vec2f size, Player* player)
     runDistance = scareRange + 256 * (rand() %1000) / 1000.0;
 
     HumanEntity::maxSpeed = 100 + 100 * (rand() %1000) / 1000.0;
+
+    lastMoveChange = 0;
 }
 
 void Civilian::update(float time)
 {
+    totalTime += time;
+
     //Get the player position
     Vec2f playerPos = player->getPosition();
 
@@ -36,7 +40,7 @@ void Civilian::update(float time)
     {
         case(NORMAL):
         {
-            movementAmount = 0;
+            movementAmount = 0.5 * wanderDir;
             break;
         }
         case(RUNNING):
@@ -48,4 +52,15 @@ void Civilian::update(float time)
 
     movementAmount *= 100;
     HumanEntity::update(time);
+
+    //std::cout << movementAmount << std::endl;
+    //std::cout << totalTime - lastMoveChange<< std::endl;
+
+    //Changing the current wander direction
+    if(totalTime - lastMoveChange > 1)
+    {
+        wanderDir = rand() % 3 - 1;
+        lastMoveChange = totalTime;
+    }
+
 }

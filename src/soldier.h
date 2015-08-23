@@ -33,6 +33,7 @@ private:
     
     sf::Sprite swordSprite;
     float swordAngle;
+    float realAngle;
     enum SwingState
     {
         READY,
@@ -41,5 +42,9 @@ private:
     };
 
     SwingState swingState;
+
+    float totalTime;
+    float lastMoveChange;
+    int wanderDir;
 };
 #endif

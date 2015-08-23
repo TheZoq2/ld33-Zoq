@@ -25,5 +25,9 @@ private:
 
     float scareRange;
     float runDistance;
+
+    float totalTime;
+    float lastMoveChange;
+    int wanderDir;
 };
 #endif
