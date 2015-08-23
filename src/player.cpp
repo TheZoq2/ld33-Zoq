@@ -135,6 +135,10 @@ void Player::damage(float damage)
     bleed();
     std::cout << health << std::endl;
 }
+float Player::getHealth()
+{
+    return health;
+}
 
 Player::Shape Player::getShape()
 {

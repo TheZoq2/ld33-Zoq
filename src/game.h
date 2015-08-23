@@ -70,6 +70,9 @@ private:
     float getWorldHeight(float xPos);
 
     std::shared_ptr<sf::Texture> swordTexture;
+
+    sf::Texture healthTexture;
+    sf::Sprite healthSprite;
 };
 
 #endif

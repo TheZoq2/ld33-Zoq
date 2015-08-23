@@ -6,8 +6,10 @@ void Game::setup()
     srand(time(NULL));
     this->window = new sf::RenderWindow(sf::VideoMode(1920,1080), "Test");
     done = false;
-    worldView = window->getDefaultView();
+    //worldView = window->getDefaultView();
+    worldView = sf::View(sf::Vector2f(0, 0), sf::Vector2f(1280,720));
     worldView.zoom(1.3);
+    uiView = sf::View(sf::Vector2f(1280/2, 720/2), sf::Vector2f(1280, 720));
 
     generateMap();
     
@@ -20,6 +22,10 @@ void Game::setup()
     swordTexture = std::make_shared<sf::Texture>();
 
     swordTexture->loadFromFile("../media/img/sword.png");
+
+    healthTexture.loadFromFile("../media/img/bloodyScreen.png");
+    healthSprite.setTexture(healthTexture);
+    healthSprite.setScale(6.5, 6.5);
 }
 
 void Game::loop()
@@ -39,9 +45,9 @@ void Game::loop()
         if(event.type == sf::Event::Resized)
         {
             //window->setSize(sf::Vector2<unsigned int>(width, height));
-            sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-            sf::View view(visibleArea);
-            uiView.reset(visibleArea);
+            //sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+            //sf::View view(visibleArea);
+            //uiView.reset(visibleArea);
             //view.setViewport(sf::FloatRect(0,0,1,1));
             //view.setSize(event.size.width, event.size.height);
             //window->setView(view);
@@ -74,7 +80,9 @@ void Game::loop()
 
     window->setView(uiView);
     uiView.setCenter(uiView.getSize().x / 2, uiView.getSize().y / 2);
-    mainUIWindow.draw(window, Vec2f(0, 0));
+    //mainUIWindow.draw(window, Vec2f(0, 0));
+    healthSprite.setColor(sf::Color(255,255,255, 255 * (1 - player->getHealth()  / 1000.0f)));
+    window->draw(healthSprite);
 
     window->display();
 

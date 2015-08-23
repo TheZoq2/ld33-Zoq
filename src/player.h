@@ -21,6 +21,7 @@ public:
     virtual void draw(sf::RenderWindow* window);
 
     virtual void damage(float damage);
+    virtual float getHealth();
 
     Shape getShape();
     bool isHidden();
