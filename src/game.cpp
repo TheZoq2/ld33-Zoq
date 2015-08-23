@@ -64,6 +64,7 @@ void Game::loop()
 
     window->setView(worldView);
     worldView.setCenter(player->getPosition());
+    updateWorld();
     world.update(frameTime);
     world.draw(window, Vec2f(player->getPosition()));
 
@@ -89,8 +90,8 @@ void Game::cleanup()
 
 void Game::updateWorld()
 {
-    const float despawnDistance = 1000;
-    const float spawnDistance = 700;
+    const float despawnDistance = 1500;
+    const float spawnDistance = 1000;
     const int maxCivs = 20;
     const int maxSoldiers = 10;
 
@@ -98,10 +99,13 @@ void Game::updateWorld()
     //Count how many people are in the world
     std::vector<Entity*> entities = mainGroup->getEntities();
 
-    if(gameClock.getElapsedTime() - lastFrame > sf::seconds(5))
+    if(gameClock.getElapsedTime() - lastWave > sf::seconds(5))
     {
+        lastWave = gameClock.getElapsedTime();
         int civAmount = 0;
         int soldierAmount = 0;
+
+        std::cout << "updating entities" << std::endl;
 
         for(auto it : entities)
         {
@@ -148,6 +152,22 @@ void Game::updateWorld()
                 }
                 civilian->setPosition(Vec2f(xPos, getWorldHeight(xPos) - 200));
                 mainGroup->addEntity(civilian);
+            }
+        }
+        if(soldierAmount < maxSoldiers)
+        {
+            //Spawn some new civilians
+            for(int i = 0; i < maxSoldiers - soldierAmount; i++)
+            {
+                Soldier* soldier = new Soldier(Vec2f(30,90), player);
+
+                float xPos = player->getPosition().x + spawnDistance;
+                if(rand() % 2 == 1)
+                {
+                    xPos = player->getPosition().x - spawnDistance;
+                }
+                soldier->setPosition(Vec2f(xPos, getWorldHeight(xPos) - 200));
+                mainGroup->addEntity(soldier);
             }
         }
     } //End waves
