@@ -91,8 +91,6 @@ Line* HumanEntity::getCollisionLine()
 void HumanEntity::kill()
 {
     done = true;
-
-    std::cout << "entity is kill :p" << std::endl;
 }
 
 //////////////////////////////////////////////////////////////////////////////////

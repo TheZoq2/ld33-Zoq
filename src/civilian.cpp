@@ -23,7 +23,7 @@ void Civilian::update(float time)
     float playerDistance = pos.x - playerPos.x;
     int playerDirection = playerDistance / std::abs(playerDistance);
 
-    if(std::abs(playerDistance) < scareRange)
+    if(std::abs(playerDistance) < scareRange && player->canBeSeen())
     {
         scareState = RUNNING;
     }

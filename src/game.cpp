@@ -105,8 +105,6 @@ void Game::updateWorld()
         int civAmount = 0;
         int soldierAmount = 0;
 
-        std::cout << "updating entities" << std::endl;
-
         for(auto it : entities)
         {
             float playerDistance = it->getPosition().x - player->getPosition().x;
@@ -201,6 +199,9 @@ void Game::generateMap()
     addMapTexture("../media/img/mpi12grassTile.png");
     addMapTexture("../media/img/mpi6grassTile.png");
 
+    std::shared_ptr<sf::Texture> dirtTexture = std::make_shared<sf::Texture>();
+    dirtTexture->loadFromFile("../media/img/dirtPillar.png");
+
     float possibleAngles[] = {-M_PI/6, -M_PI/12, 0, 0, M_PI / 12, M_PI / 6};
     int angleAmount = 6;
     int currentAngle = 3;
@@ -243,6 +244,13 @@ void Game::generateMap()
         newSprite->setPosition(Vec2f(newPos.x - platformStep, newPos.y - platformStep - newHeight));
         newSprite->setDepth(1);
         mainGroup->addEntity(newSprite);
+
+        SpriteEntity* dirtPillar = new SpriteEntity();
+        dirtPillar->create(dirtTexture);
+        dirtPillar->setScale(Vec2f(4,4));
+        dirtPillar->setPosition(Vec2f(newPos.x - platformStep, newPos.y - platformStep - newHeight + platformStep * 2));
+        mainGroup->addEntity(dirtPillar);
+
 
         if(rand()%100 < hidingSpotOdds)
         {
