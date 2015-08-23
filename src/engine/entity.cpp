@@ -37,6 +37,10 @@ bool Entity::isDone()
 {
     return done;
 }
+void Entity::setDone(bool done)
+{
+    this->done = done;
+}
 
 bool Entity::pointIsOnEntity(Vec2f point)
 {

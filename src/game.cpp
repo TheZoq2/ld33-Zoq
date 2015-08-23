@@ -61,7 +61,7 @@ void Game::loop()
     }
 
     //Redraw stuff
-    window->clear(sf::Color::Black);
+    window->clear(sf::Color(135,206,235));
     
 
     window->setView(worldView);
@@ -101,6 +101,8 @@ void Game::updateWorld()
     //Count how many people are in the world
     std::vector<Entity*> entities = mainGroup->getEntities();
 
+    //std::cout << "Entity amount " << entities.size() << std::endl;
+
 
     if(gameClock.getElapsedTime() - lastWave > sf::seconds(5))
     {
@@ -117,7 +119,7 @@ void Game::updateWorld()
             {
                 if(std::abs(playerDistance) > despawnDistance)
                 {
-                    civilian->kill();
+                    civilian->setDone(true);
 
                     //std::cout << it->getPosition().x << "    " << player->getPosition().x << std::endl;
                 }
@@ -132,7 +134,7 @@ void Game::updateWorld()
             {
                 if(std::abs(playerDistance) > despawnDistance)
                 {
-                    soldier->kill();
+                    soldier->setDone(true);
                 }
                 else
                 {

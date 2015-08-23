@@ -22,6 +22,7 @@ public:
     virtual void setPosition(Vec2f pos);
     virtual void setDepth(int depth);
     virtual void setGroup(EntityGroup* group);
+    virtual void setDone(bool done);
 
     int getDepth();
     Vec2f getPosition();
