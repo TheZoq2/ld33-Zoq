@@ -3,6 +3,7 @@
 
 #include "engine/humanentity.h"
 #include "hidingspot.h"
+#include "bloodsplatter.h"
 
 class Player : public HumanEntity
 {
@@ -22,7 +23,6 @@ public:
     Shape getShape();
     bool isHidden();
     bool canBeSeen();
-
 private:
     void attack();
 
@@ -39,5 +39,6 @@ private:
 
     bool hidden;
     HidingSpot* hidingSpot;
+
 };
 #endif

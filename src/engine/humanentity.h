@@ -2,6 +2,7 @@
 #define H_HUMANENTITY
 
 #include "physicsentity.h"
+#include "../bloodsplatter.h"
 
 class HumanEntity : public PhysicsEntity
 {
@@ -41,6 +42,8 @@ protected:
     int movementDirection;
 
     Line collisionLine;
+
+    std::shared_ptr<sf::Texture> bloodTexture;
 
 private:
 };

@@ -13,6 +13,9 @@ HumanEntity::HumanEntity(Vec2f size)
     
     
     movementDirection = 1;
+
+    bloodTexture = std::make_shared<sf::Texture>();
+    bloodTexture->loadFromFile("../media/img/blood.png");
 }
 HumanEntity* HumanEntity::clone()
 {
@@ -91,6 +94,31 @@ Line* HumanEntity::getCollisionLine()
 void HumanEntity::kill()
 {
     done = true;
+
+    //Creating blood splats
+    /*for(unsigned int i = 0; i < 20; i++)
+    {
+        BloodSplatter* splatter = new BloodSplatter();
+        splatter->create(bloodTexture);
+        
+        float maxSpeedX = 200;
+        float minSpeedX = 20;
+        float minSpeedY = -50;
+        float maxSpeedY = 30;
+
+        if(movementDirection == 1)
+        {
+            float buffer = minSpeedX;
+            minSpeedX = -maxSpeedX;
+            maxSpeedX = -buffer;
+        }
+
+        splatter->giveSpeed(minSpeedX, minSpeedY, maxSpeedX, maxSpeedY);
+        splatter->setPosition(this->getPosition());
+
+        //Add the blood to the entity group
+        group->addEntity(splatter);
+    }*/
 }
 
 //////////////////////////////////////////////////////////////////////////////////

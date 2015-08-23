@@ -68,6 +68,8 @@ private:
     void addMapTexture(std::string path);
 
     float getWorldHeight(float xPos);
+
+    std::shared_ptr<sf::Texture> swordTexture;
 };
 
 #endif

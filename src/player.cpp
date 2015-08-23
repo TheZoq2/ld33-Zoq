@@ -6,6 +6,7 @@ Player::Player(Vec2f size)
     transformFrequency = sf::seconds(10);
     attackFrequency = sf::seconds(0.5);
     attackDuration = sf::seconds(0.25);
+
 }
 Player* Player::clone()
 {

@@ -17,6 +17,10 @@ void Game::setup()
     player = new Player(Vec2f(40, 100));
     player->setPosition(Vec2f(10000, getWorldHeight(10000) - 100));
     mainGroup->addEntity(player);
+
+    swordTexture = std::make_shared<sf::Texture>();
+
+    swordTexture->loadFromFile("../media/img/sword.png");
 }
 
 void Game::loop()
@@ -99,6 +103,7 @@ void Game::updateWorld()
     //Count how many people are in the world
     std::vector<Entity*> entities = mainGroup->getEntities();
 
+
     if(gameClock.getElapsedTime() - lastWave > sf::seconds(5))
     {
         lastWave = gameClock.getElapsedTime();
@@ -165,6 +170,7 @@ void Game::updateWorld()
                     xPos = player->getPosition().x - spawnDistance;
                 }
                 soldier->setPosition(Vec2f(xPos, getWorldHeight(xPos) - 200));
+                soldier->setSwordTexture(swordTexture);
                 mainGroup->addEntity(soldier);
             }
         }
@@ -189,7 +195,7 @@ void Game::generateMap()
     
     float platformStep = 128;
 
-    unsigned int worldSize = 2000;
+    unsigned int worldSize = 1000;
     
 
     addMapTexture("../media/img/pi6grassTile.png");

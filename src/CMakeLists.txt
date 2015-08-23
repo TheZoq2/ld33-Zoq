@@ -45,6 +45,7 @@ add_library(${LIB_NAME}
     soldier.cpp
     hidingspot.cpp
     hidingspottemplate.cpp
+    bloodsplatter.cpp
 )
 
 # Define sources and executable

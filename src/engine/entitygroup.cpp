@@ -1,4 +1,4 @@
-#include "entitygroup.h"
+ #include "entitygroup.h"
 
 EntityGroup::EntityGroup()
 {
@@ -85,7 +85,7 @@ void EntityGroup::draw(sf::RenderWindow* window)
 
     for(auto it : platforms)
     {
-        it.platform->draw(window);
+        //it.platform->draw(window);
     }
 }
 
