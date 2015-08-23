@@ -112,9 +112,12 @@ void PhysicsEntity::draw(sf::RenderWindow* window)
 
 void PhysicsEntity::jump(float speed)
 {
-    groundState = GroundState::RISING;
+    if(groundState == GroundState::ON_GROUND)
+    {
+        groundState = GroundState::RISING;
 
-    velocity.y = velocity.y - speed;
+        velocity.y = velocity.y - speed;
+    }
 }
 
 void PhysicsEntity::setPosition(Vec2f pos)

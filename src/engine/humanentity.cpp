@@ -30,11 +30,6 @@ void HumanEntity::update(float time)
             if(groundState == GroundState::ON_GROUND)
             {
                 velocity.x = (maxSpeed * 2 * movementAmount / 100.0f); 
-
-                if(sf::Joystick::isButtonPressed(0, 0))
-                {
-                    jump(600);
-                }
             }
             else
             {

@@ -28,6 +28,8 @@ protected:
     GroundState groundState;
 
     Vec2f velocity;
+protected:
+    sf::RectangleShape shape;
 private:
     uint32_t platformID; // The platform where the entity is currently 'standing'
     float platformX; //The current xPosition on the platform
@@ -37,7 +39,6 @@ private:
     Vec2f size;
 
 
-    sf::RectangleShape shape;
 
     float gravity;
 };

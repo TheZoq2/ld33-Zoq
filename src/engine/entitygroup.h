@@ -37,6 +37,8 @@ public:
 
     PlatformCollisionResult getPlatformCollision(Vec2f originPos, Line* line); 
 
+    std::vector< Entity* > getEntities();
+
     Entity* getFirstCollision(Vec2f point);
 private:
     uint32_t nextPlatformID;

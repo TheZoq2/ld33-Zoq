@@ -21,6 +21,10 @@
 #include "engine/physicsentity.h"
 #include "engine/ground.h"
 #include "player.h"
+#include "civilian.h"
+#include "soldier.h"
+#include "hidingspot.h"
+#include "hidingspottemplate.h"
 
 class Game
 {
@@ -48,10 +52,16 @@ private:
     sf::Time frameTime;
     sf::Time lastFrame;
 
-
     Player* player;
 
     void generateMap();
+    void createTemplateHidingSpots();
+    
+
+    std::vector< std::shared_ptr<sf::Texture> > mapTextures;
+    std::vector< HidingSpotTemplate > templateHidingSpots;
+
+    void addMapTexture(std::string path);
 };
 
 #endif

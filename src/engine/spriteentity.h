@@ -12,7 +12,7 @@
 class SpriteEntity : public Entity
 {
 public:
-    void create(std::shared_ptr<sf::Texture> texture);
+    virtual void create(std::shared_ptr<sf::Texture> texture);
 
     virtual SpriteEntity* clone();
 
@@ -25,7 +25,7 @@ public:
     virtual void setOrigin(Vec2f origin);
 
     virtual bool pointIsOnEntity(Vec2f point);
-private:
+protected:
     std::shared_ptr<sf::Texture> texture;
     sf::Sprite sprite;
 

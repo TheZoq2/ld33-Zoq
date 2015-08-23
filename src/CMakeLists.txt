@@ -41,6 +41,10 @@ add_library(${LIB_NAME}
     engine/ground.cpp
     engine/humanentity.cpp
     player.cpp
+    civilian.cpp
+    soldier.cpp
+    hidingspot.cpp
+    hidingspottemplate.cpp
 )
 
 # Define sources and executable

@@ -77,6 +77,17 @@ void EntityGroup::draw(sf::RenderWindow* window)
     }
 }
 
+std::vector<Entity*> EntityGroup::getEntities()
+{
+    std::vector<Entity*> result;
+
+    for(auto& it : entities)
+    {
+        result.push_back(it.get());
+    }
+    return result;
+}
+
 bool EntityGroup::platformExists(uint32_t id)
 {
     for(auto it : platforms)
