@@ -52,13 +52,23 @@ void Player::update(float time)
 
     HumanEntity::movementAmount = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
 
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+    {
+        movementAmount = 100;
+    }
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+    {
+        movementAmount = -100;
+    }
+
+
     //Deadzone
     if(std::abs(movementAmount) < 5)
     {
         movementAmount = 0;
     }
 
-    if(sf::Joystick::isButtonPressed(0, 0))
+    if(sf::Joystick::isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
     {
         jump(600);
     }
@@ -70,7 +80,7 @@ void Player::update(float time)
             HumanEntity::roll(-1);
         }
     }
-    else if(sf::Joystick::isButtonPressed(0, 5))
+    else if(sf::Joystick::isButtonPressed(0, 5) )
     {
         if(!hidden)
         {
@@ -108,7 +118,7 @@ void Player::update(float time)
             {
                 if(std::abs(spot->getPosition().x - pos.x) < hidingDistance)
                 {
-                    if(sf::Joystick::isButtonPressed(0, 3))
+                    if(sf::Joystick::isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::E))
                     {
                         hidden = true;
                         this->hidingSpot = spot;
@@ -146,7 +156,7 @@ void Player::update(float time)
         }
         else if(sinceLastAttack > attackFrequency)
         {
-            if(sf::Joystick::isButtonPressed(0, 2))
+            if(sf::Joystick::isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
             {
                 lastAttack = playerClock.getElapsedTime();
                 attack();
