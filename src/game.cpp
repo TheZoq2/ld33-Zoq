@@ -281,7 +281,7 @@ void Game::updateWorld()
             Soldier* soldier = dynamic_cast<Soldier*>(it);
             if(soldier != nullptr)
             {
-                if(std::abs(playerDistance) > despawnDistance)
+                if(std::abs(playerDistance) > despawnDistance || soldier->getPosition().y > 10000)
                 {
                     soldier->setDone(true);
                 }
@@ -412,6 +412,7 @@ void Game::generateMap()
         dirtPillar->create(dirtTexture);
         dirtPillar->setScale(Vec2f(4,4));
         dirtPillar->setPosition(Vec2f(newPos.x - platformStep, newPos.y - platformStep - newHeight + platformStep * 2));
+        dirtPillar->setDepth(1);
         mainGroup->addEntity(dirtPillar);
 
 
