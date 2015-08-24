@@ -16,25 +16,37 @@ I will upload a windows build shortly. For now you will probably be able to buil
 
 First, you need to install SFML (I developed the game using SFML 2.3 but other SFML 2.x versions may work)
 
-On ubuntu, execute
-`sudo apt-get install libsfml-dev`
+On ubuntu, execute:
+```
+sudo apt-get install libsfml-dev
+```
 
 On arch:
-`sudo pacman -S sfml`
+```
+sudo pacman -S sfml
+```
 
-1: Download the sourcecode
-`git clone https://github.com/TheZoq2/ld33-zoq.git`
+####1: Download the sourcecode
+````
+git clone https://github.com/TheZoq2/ld33-zoq.git
+```
 
-2: Navigate into the new folder and create a build directory
-`cd ld33-zoq`
-`mkdir build`
-`cd build`
+####2: Navigate into the new folder and create a build directory
+```
+cd ld33-zoq
+mkdir build
+cd build
+```
 
-3: Compile the project
-`make`
+####3: Compile the project
+```
+make
+```
 
-4: Run 'possessed'
-`./possessed`
+####4: Run 'possessed'
+```
+./possessed
+```
 
 # Credits
 Font downloaded from http://dsg4.com/04/extra/bitmap/
