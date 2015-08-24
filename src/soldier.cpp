@@ -11,6 +11,8 @@ Soldier::Soldier(Vec2f size, Player* player)
     swingState = READY;
     realAngle = -M_PI / 2;
     swordSprite.setRotation(realAngle / M_PI * 180 + 90);
+
+    nextMoveChange = 3 * (rand() % 1000) / 1000.0f;
 }
 
 void Soldier::update(float time)
@@ -36,8 +38,10 @@ void Soldier::update(float time)
         case(NEUTRAL):
         {
             //Changing the current wander direction
-            if(totalTime - lastMoveChange > 1)
+            if(totalTime - lastMoveChange > nextMoveChange)
             {
+                nextMoveChange = 3 * (rand() % 1000) / 1000.0f;
+
                 wanderDir = rand() % 3 - 1;
                 lastMoveChange = totalTime;
             }

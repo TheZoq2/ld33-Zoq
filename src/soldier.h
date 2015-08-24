@@ -50,5 +50,6 @@ private:
     float totalTime;
     float lastMoveChange;
     int wanderDir;
+    float nextMoveChange;
 };
 #endif

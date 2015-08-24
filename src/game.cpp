@@ -215,7 +215,9 @@ void Game::runGame(float frameTime)
     worldView.setCenter(player->getPosition());
     updateWorld();
     world.update(frameTime);
+
     world.draw(window, Vec2f(player->getPosition()));
+    
 
     //sf::View view = window->getView();
 
@@ -237,6 +239,7 @@ void Game::runGame(float frameTime)
         gameState = RETRY_SETUP;
         cleanupGame();
     }
+
 }
 
 void Game::updateWorld()
