@@ -33,7 +33,7 @@ git clone https://github.com/TheZoq2/ld33-zoq.git
 
 ####2: Navigate into the new folder and create a build directory
 ```
-cd ld33-zoq
+cd ld33-possessed
 mkdir build
 cd build
 ```
