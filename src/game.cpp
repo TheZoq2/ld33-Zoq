@@ -370,7 +370,7 @@ void Game::generateMap()
     int currentAngle = 3;
     Vec2f oldPos = Vec2f(0,0);
 
-    int hidingSpotOdds = 10;
+    int hidingSpotOdds = 8;
     int hidingSpotAmount = 2;
 
     mainPlatform->addPoint(oldPos);

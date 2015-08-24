@@ -6,7 +6,7 @@ Soldier::Soldier(Vec2f size, Player* player)
     this->player = player;
     shape.setFillColor(sf::Color(255, 0, 0));
 
-    sightRange = 200 + 200 * (rand() % 1000) / 1000.0f;
+    sightRange = 800 + 300 * (rand() % 1000) / 1000.0f;
     attackRange = 64 + 64 * (rand() % 1000) / 1000.0f;
     swingState = READY;
     realAngle = -M_PI / 2;
