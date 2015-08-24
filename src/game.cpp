@@ -103,12 +103,12 @@ void Game::loop()
             window->setView(uiView);
             window->draw(menuSprite);
 
-            if(sf::Joystick::isButtonPressed(0, 0))
+            if(sf::Joystick::isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
             {
                 //Move on to the game
                 gameState = GAME_SETUP;
             }
-            if(sf::Joystick::isButtonPressed(0, 1))
+            if(sf::Joystick::isButtonPressed(0, 1) || sf::Keyboard::isKeyPressed(sf::Keyboard::E))
             {
                 //Move on to the tutorial
                 gameState = TUTORIAL1;
@@ -137,11 +137,11 @@ void Game::loop()
         }
         case(RETRY):
         {
-            if(sf::Joystick::isButtonPressed(0, 2))
+            if(sf::Joystick::isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             {
                 gameState = MENU_SETUP;
             }
-            else if(sf::Joystick::isButtonPressed(0,0))
+            else if(sf::Joystick::isButtonPressed(0,0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
             {
                 gameState = GAME_SETUP;
             }
@@ -153,7 +153,7 @@ void Game::loop()
         }
         case(TUTORIAL1):
         {
-            if(sf::Joystick::isButtonPressed(0, 0))
+            if(sf::Joystick::isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
             {
                 gameState = TUTORIAL2;
             }
@@ -164,7 +164,7 @@ void Game::loop()
         }
         case(TUTORIAL2):
         {
-            if(sf::Joystick::isButtonPressed(0, 2))
+            if(sf::Joystick::isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
                 gameState = MENU;
             }
