@@ -9,6 +9,7 @@ Player::Player(Vec2f size)
 
     health = 1000;
     hidden = false;
+    score = 0;
 
     normalTexture = std::make_shared<sf::Texture>();
     normalWalkTexture = std::make_shared<sf::Texture>();
@@ -36,6 +37,7 @@ Player::Player(Vec2f size)
 
     currentShape = MONSTER;
     transform();
+
 }
 Player::~Player()
 {}
@@ -219,6 +221,10 @@ bool Player::canBeSeen()
     return getShape() == MONSTER && !isHidden();
 }
 
+int Player::getScore()
+{
+    return score;
+}
 //////////////////////////////////////////////////
 //          Private members
 //////////////////////////////////////////////////
@@ -270,6 +276,15 @@ void Player::attack()
                 if(arm.getIntersect(human->getCollisionLine()).intersected)
                 {
                     human->kill();
+
+                    if(dynamic_cast<Soldier*>(human) != nullptr)
+                    {
+                        score += 2000;
+                    }
+                    else
+                    {
+                        score += 1000;
+                    }
                 }
             }
         }

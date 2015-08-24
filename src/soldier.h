@@ -3,6 +3,8 @@
 
 #include "player.h"
 
+class Player;
+
 class Soldier : public HumanEntity
 {
 public:
@@ -15,6 +17,7 @@ public:
     virtual void attack();
 
     virtual void setSwordTexture(std::shared_ptr<sf::Texture> swordTexture);
+
 private:
     enum DetectionState
     {

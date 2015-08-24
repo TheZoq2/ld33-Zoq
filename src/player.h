@@ -4,6 +4,9 @@
 #include "engine/humanentity.h"
 #include "hidingspot.h"
 #include "bloodsplatter.h"
+#include "soldier.h"
+
+class Soldier;
 
 class Player : public HumanEntity
 {
@@ -28,6 +31,8 @@ public:
     Shape getShape();
     bool isHidden();
     bool canBeSeen();
+
+    virtual int getScore();
 private:
     void attack();
 
@@ -63,6 +68,6 @@ private:
     bool showTransformIndicator;
     sf::Sprite transformIndicator;
 
-    float score;
+    int score;
 };
 #endif

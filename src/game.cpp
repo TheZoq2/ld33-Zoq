@@ -45,6 +45,9 @@ void Game::setup()
     soldierWalkTexture = std::make_shared<sf::Texture>();
     soldierTexture->loadFromFile("../media/img/soldier1.png");
     soldierWalkTexture->loadFromFile("../media/img/soldier1_walk.png");
+
+    gameFont.loadFromFile("../media/fonts/04B_03__.TTF");
+    gameScoreDisplay.setFont(gameFont);
 }
 
 void Game::loop()
@@ -126,6 +129,10 @@ void Game::loop()
         case(RETRY_SETUP):
         {
             gameState = RETRY;
+
+            gameScoreDisplay.setOrigin(gameScoreDisplay.getLocalBounds().width / 2, gameScoreDisplay.getLocalBounds().height / 2);
+            gameScoreDisplay.setCharacterSize(64);
+            gameScoreDisplay.setPosition(uiView.getCenter());
             break;
         }
         case(RETRY):
@@ -141,6 +148,7 @@ void Game::loop()
 
             window->setView(uiView);
             window->draw(restartSprite);
+            window->draw(gameScoreDisplay);
             break;
         }
         case(TUTORIAL1):
@@ -192,6 +200,9 @@ void Game::setupGame()
     player->setPosition(Vec2f(10000, getWorldHeight(10000) - 100));
     mainGroup->addEntity(player);
 
+    gameScoreDisplay.setCharacterSize(48);
+    gameScoreDisplay.setPosition(20, 20);
+    gameScoreDisplay.setOrigin(0,0);
 }
 void Game::cleanupGame()
 {
@@ -200,7 +211,6 @@ void Game::cleanupGame()
 void Game::runGame(float frameTime)
 {
     
-
     window->setView(worldView);
     worldView.setCenter(player->getPosition());
     updateWorld();
@@ -213,9 +223,15 @@ void Game::runGame(float frameTime)
     uiView.setCenter(uiView.getSize().x / 2, uiView.getSize().y / 2);
     //mainUIWindow.draw(window, Vec2f(0, 0));
     healthSprite.setColor(sf::Color(255,255,255, 255 * (1 - player->getHealth()  / 1000.0f)));
+
+    char scoreBuffer[256];
+    sprintf(scoreBuffer, "Score: %i\n", player->getScore());
+
+    gameScoreDisplay.setString(scoreBuffer);
+
     window->draw(healthSprite);
-
-
+    window->draw(gameScoreDisplay);
+    
     if(player->getHealth() < 0)
     {
         gameState = RETRY_SETUP;
@@ -225,7 +241,7 @@ void Game::runGame(float frameTime)
 
 void Game::updateWorld()
 {
-    const float despawnDistance = 2000;
+    const float despawnDistance = 1600;
     const float spawnDistance = 1500.03;
     const int maxCivs = 20;
     const int maxSoldiers = 10;

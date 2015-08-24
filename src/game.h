@@ -103,6 +103,9 @@ private:
     std::shared_ptr<sf::Texture> civilianWalkTexture;
     std::shared_ptr<sf::Texture> soldierTexture;
     std::shared_ptr<sf::Texture> soldierWalkTexture;
+
+    sf::Font gameFont;
+    sf::Text gameScoreDisplay;
 };
 
 #endif
