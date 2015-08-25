@@ -1,0 +1,2 @@
+/home/frans/Documents/cpp/sfml/ld33-zoq/build/CMakeFiles/myproject.dir
+/home/frans/Documents/cpp/sfml/ld33-zoq/build/CMakeFiles/SharedCode.dir
