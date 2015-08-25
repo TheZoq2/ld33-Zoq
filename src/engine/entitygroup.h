@@ -28,6 +28,7 @@ public:
 
     void draw(sf::RenderWindow* window);
     void update(float frameTime);
+    void clear();
 
     void onEntityDepthChange(Entity* entity);
 

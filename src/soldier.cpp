@@ -6,11 +6,13 @@ Soldier::Soldier(Vec2f size, Player* player)
     this->player = player;
     shape.setFillColor(sf::Color(255, 0, 0));
 
-    sightRange = 200 + 200 * (rand() % 1000) / 1000.0f;
+    sightRange = 800 + 300 * (rand() % 1000) / 1000.0f;
     attackRange = 64 + 64 * (rand() % 1000) / 1000.0f;
     swingState = READY;
     realAngle = -M_PI / 2;
     swordSprite.setRotation(realAngle / M_PI * 180 + 90);
+
+    nextMoveChange = 3 * (rand() % 1000) / 1000.0f;
 }
 
 void Soldier::update(float time)
@@ -36,8 +38,10 @@ void Soldier::update(float time)
         case(NEUTRAL):
         {
             //Changing the current wander direction
-            if(totalTime - lastMoveChange > 1)
+            if(totalTime - lastMoveChange > nextMoveChange)
             {
+                nextMoveChange = 3 * (rand() % 1000) / 1000.0f;
+
                 wanderDir = rand() % 3 - 1;
                 lastMoveChange = totalTime;
             }
@@ -90,12 +94,6 @@ void Soldier::draw(sf::RenderWindow* window)
     swordSprite.setPosition(pos);
     window->draw(swordSprite);
 
-    //Making a line for the sword
-    float swordX = pos.x + cos(realAngle) * 128;
-    float swordY = pos.y + sin(realAngle) * 128;
-
-    Line testLine(pos, Vec2f(swordX, swordY));
-    testLine.draw(window);
 }
 
 void Soldier::attack()
@@ -103,6 +101,7 @@ void Soldier::attack()
     if(swingState == READY)
     {
         swingState = FORWARD;
+        swingDealtDamage = false;
     }
 }
 void Soldier::updateSword(float time)
@@ -148,6 +147,19 @@ void Soldier::updateSword(float time)
     }
 
     swordSprite.setRotation(realAngle / M_PI * 180 + 90);
+
+    //Dealing damage
+    //Making a line for the sword
+    float swordX = pos.x + cos(realAngle) * 128;
+    float swordY = pos.y + sin(realAngle) * 128;
+
+    Line testLine(pos, Vec2f(swordX, swordY));
+
+    if(testLine.getIntersect(player->getCollisionLine()).intersected && !swingDealtDamage)
+    {
+        player->damage(250);
+        swingDealtDamage = true;
+    }
 }
 
 void Soldier::setSwordTexture(std::shared_ptr<sf::Texture> texture)

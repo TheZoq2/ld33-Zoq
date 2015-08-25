@@ -15,6 +15,7 @@ Civilian::Civilian(Vec2f size, Player* player)
     HumanEntity::maxSpeed = 100 + 100 * (rand() %1000) / 1000.0;
 
     lastMoveChange = 0;
+    nextMoveChange = 3 * (rand() % 1000) / 1000.0f;
 }
 
 void Civilian::update(float time)
@@ -57,8 +58,9 @@ void Civilian::update(float time)
     //std::cout << totalTime - lastMoveChange<< std::endl;
 
     //Changing the current wander direction
-    if(totalTime - lastMoveChange > 1)
+    if(totalTime - lastMoveChange > nextMoveChange)
     {
+        nextMoveChange = 3 * (rand() % 1000) / 1000.0f;
         wanderDir = rand() % 3 - 1;
         lastMoveChange = totalTime;
     }

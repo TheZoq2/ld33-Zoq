@@ -3,6 +3,8 @@
 
 #include "player.h"
 
+class Player;
+
 class Soldier : public HumanEntity
 {
 public:
@@ -15,6 +17,7 @@ public:
     virtual void attack();
 
     virtual void setSwordTexture(std::shared_ptr<sf::Texture> swordTexture);
+
 private:
     enum DetectionState
     {
@@ -31,9 +34,6 @@ private:
     float sightRange;
     float attackRange;
     
-    sf::Sprite swordSprite;
-    float swordAngle;
-    float realAngle;
     enum SwingState
     {
         READY,
@@ -41,10 +41,15 @@ private:
         BACK
     };
 
+    sf::Sprite swordSprite;
+    float swordAngle;
+    float realAngle;
     SwingState swingState;
+    bool swingDealtDamage;
 
     float totalTime;
     float lastMoveChange;
     int wanderDir;
+    float nextMoveChange;
 };
 #endif

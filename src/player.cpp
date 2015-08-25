@@ -7,7 +7,40 @@ Player::Player(Vec2f size)
     attackFrequency = sf::seconds(0.5);
     attackDuration = sf::seconds(0.25);
 
+    health = 1000;
+    hidden = false;
+    score = 0;
+
+    normalTexture = std::make_shared<sf::Texture>();
+    normalWalkTexture = std::make_shared<sf::Texture>();
+    monsterTexture = std::make_shared<sf::Texture>();
+    monsterWalkTexture = std::make_shared<sf::Texture>();
+
+    normalTexture->loadFromFile("../media/img/playerHuman.png");
+    normalWalkTexture->loadFromFile("../media/img/playerHuman_walk.png");
+    monsterTexture->loadFromFile("../media/img/playerDemon.png");
+    monsterWalkTexture->loadFromFile("../media/img/playerDemon_walk.png");
+
+    monsterAttackTexture.loadFromFile("../media/img/playerDemon_attack.png");
+    //sprite.setOrigin(32,32);
+    //sprite.setScale(2, 2);
+    //sprite.setTexture(normalTexture);
+
+    attackSprite.setOrigin(32,32);
+    attackSprite.setScale(2, 2);
+    attackSprite.setTexture(monsterAttackTexture);
+
+    transformIndicator.setTexture(*normalTexture);
+    transformIndicator.setColor(sf::Color(255,255,255, 100));
+    transformIndicator.setScale(2, 2);
+    transformIndicator.setOrigin(32,32);
+
+    currentShape = MONSTER;
+    transform();
+
 }
+Player::~Player()
+{}
 Player* Player::clone()
 {
     return new Player(*this);
@@ -19,13 +52,23 @@ void Player::update(float time)
 
     HumanEntity::movementAmount = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
 
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+    {
+        movementAmount = 100;
+    }
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+    {
+        movementAmount = -100;
+    }
+
+
     //Deadzone
     if(std::abs(movementAmount) < 5)
     {
         movementAmount = 0;
     }
 
-    if(sf::Joystick::isButtonPressed(0, 0))
+    if(sf::Joystick::isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
     {
         jump(600);
     }
@@ -37,7 +80,7 @@ void Player::update(float time)
             HumanEntity::roll(-1);
         }
     }
-    else if(sf::Joystick::isButtonPressed(0, 5))
+    else if(sf::Joystick::isButtonPressed(0, 5) )
     {
         if(!hidden)
         {
@@ -49,6 +92,14 @@ void Player::update(float time)
     {
         transform();
         lastTransform = playerClock.getElapsedTime();
+    }
+    else if(playerClock.getElapsedTime() - lastTransform > transformFrequency - sf::seconds(2))
+    {
+        showTransformIndicator = true;
+    }
+    else
+    {
+        showTransformIndicator = false;
     }
 
     //Hiding feature
@@ -67,7 +118,7 @@ void Player::update(float time)
             {
                 if(std::abs(spot->getPosition().x - pos.x) < hidingDistance)
                 {
-                    if(sf::Joystick::isButtonPressed(0, 3))
+                    if(sf::Joystick::isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::E))
                     {
                         hidden = true;
                         this->hidingSpot = spot;
@@ -101,15 +152,25 @@ void Player::update(float time)
         if(sinceLastAttack < attackDuration)
         {
             attack();
+            attacking = true;
         }
         else if(sinceLastAttack > attackFrequency)
         {
-            if(sf::Joystick::isButtonPressed(0, 2))
+            if(sf::Joystick::isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
             {
                 lastAttack = playerClock.getElapsedTime();
                 attack();
+                attacking = true;
             }
         }
+        else
+        {
+            attacking = false;
+        }
+    }
+    else
+    {
+        attacking = false;
     }
 }
 void Player::draw(sf::RenderWindow* window)
@@ -117,7 +178,43 @@ void Player::draw(sf::RenderWindow* window)
     if(hidden == false)
     {
         HumanEntity::draw(window);
+        //sprite.setScale(2 * movementDirection, 2);
+        ////HumanEntity::draw(window);
+        //sprite.setPosition(pos);
+        //window->draw(sprite);
+
+        if(attacking)
+        {
+            attackSprite.setScale(2 * movementDirection, 2);
+            attackSprite.setPosition(pos);
+            window->draw(attackSprite);
+
+        }
+        if(showTransformIndicator)
+        {
+            transformIndicator.setScale(2 * movementDirection, 2);
+            transformIndicator.setPosition(pos);
+            window->draw(transformIndicator);
+        }
     }
+}
+
+void Player::damage(float damage)
+{
+    if(currentShape == Shape::MONSTER)
+    {
+        health -= damage * 0.1;
+    }
+    else
+    {
+        health -= damage;
+    }
+
+    bleed();
+}
+float Player::getHealth()
+{
+    return health;
 }
 
 Player::Shape Player::getShape()
@@ -133,6 +230,13 @@ bool Player::canBeSeen()
     return getShape() == MONSTER && !isHidden();
 }
 
+int Player::getScore()
+{
+    return score;
+}
+//////////////////////////////////////////////////
+//          Private members
+//////////////////////////////////////////////////
 void Player::transform()
 {
     if(currentShape == HUMAN)
@@ -142,6 +246,11 @@ void Player::transform()
         HumanEntity::maxSpeed = 220;
 
         shape.setFillColor(sf::Color(150,150,150));
+        //sprite.setTexture(monsterTexture);
+        HumanEntity::setWalkFrame(monsterTexture, 0);
+        HumanEntity::setWalkFrame(monsterWalkTexture, 1);
+
+        transformIndicator.setTexture(*normalTexture);
     }
     else
     {
@@ -150,6 +259,9 @@ void Player::transform()
         HumanEntity::maxSpeed = 150;
 
         shape.setFillColor(sf::Color(255,255,255));
+        HumanEntity::setWalkFrame(normalTexture, 0);
+        HumanEntity::setWalkFrame(normalWalkTexture, 1);
+        transformIndicator.setTexture(*monsterTexture);
     }
 }
 
@@ -173,6 +285,15 @@ void Player::attack()
                 if(arm.getIntersect(human->getCollisionLine()).intersected)
                 {
                     human->kill();
+
+                    if(dynamic_cast<Soldier*>(human) != nullptr)
+                    {
+                        score += 2000;
+                    }
+                    else
+                    {
+                        score += 1000;
+                    }
                 }
             }
         }

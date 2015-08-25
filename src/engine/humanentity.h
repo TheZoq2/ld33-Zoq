@@ -1,6 +1,8 @@
 #ifndef H_HUMANENTITY
 #define H_HUMANENTITY
 
+#include <math.h>
+
 #include "physicsentity.h"
 #include "../bloodsplatter.h"
 
@@ -16,6 +18,8 @@ public:
     virtual void kill();
     
     virtual Line* getCollisionLine();
+
+    virtual void setWalkFrame(std::shared_ptr<sf::Texture> texture, int index);
 protected:
     enum MoveState
     {
@@ -45,6 +49,10 @@ protected:
 
     std::shared_ptr<sf::Texture> bloodTexture;
 
+    sf::Sprite walkSprite;
+    std::shared_ptr<sf::Texture> walkFrames[2];
+
+    void bleed();
 private:
 };
 #endif

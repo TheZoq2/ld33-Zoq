@@ -37,7 +37,23 @@ public:
     
     bool isDone();
 
+    void setupGame();
+    void runGame(float frameTime);
+    void cleanupGame();
 private:
+    enum GameState
+    {
+        MENU_SETUP,
+        MENU,
+        GAME_SETUP,
+        GAME,
+        RETRY_SETUP,
+        RETRY,
+        TUTORIAL1,
+        TUTORIAL2,
+    };
+    GameState gameState;
+
     bool done;
 
     sf::RenderWindow* window;
@@ -70,6 +86,26 @@ private:
     float getWorldHeight(float xPos);
 
     std::shared_ptr<sf::Texture> swordTexture;
+
+    sf::Texture healthTexture;
+    sf::Sprite healthSprite;
+
+    sf::Texture menuTexture;
+    sf::Sprite menuSprite;
+    sf::Texture restartTexture;
+    sf::Sprite restartSprite;
+    sf::Sprite tutorial1Sprite;
+    sf::Sprite tutorial2Sprite;
+    sf::Texture tutorial1Texture;
+    sf::Texture tutorial2Texture;
+
+    std::shared_ptr<sf::Texture> civilianTexture;
+    std::shared_ptr<sf::Texture> civilianWalkTexture;
+    std::shared_ptr<sf::Texture> soldierTexture;
+    std::shared_ptr<sf::Texture> soldierWalkTexture;
+
+    sf::Font gameFont;
+    sf::Text gameScoreDisplay;
 };
 
 #endif
